@@ -1,0 +1,7 @@
+name: WebMailItemGiver
+version: 1.0
+main: org.example.WebMailItemGiver
+api-version: 1.21
+author: sorasora46
+description: WebMailItemGiver
+depend: [LTItemMail]
