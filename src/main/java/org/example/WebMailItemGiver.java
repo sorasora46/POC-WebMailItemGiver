@@ -1,28 +1,29 @@
 package org.example;
 
-import br.net.gmj.nobookie.LTItemMail.LTItemMail;
-import br.net.gmj.nobookie.LTItemMail.LTItemMailAPI;
-import br.net.gmj.nobookie.LTItemMail.entity.LTPlayer;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import br.net.gmj.nobookie.LTItemMail.LTItemMail;
+import br.net.gmj.nobookie.LTItemMail.LTItemMailAPI;
+import br.net.gmj.nobookie.LTItemMail.entity.LTPlayer;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class WebMailItemGiver extends JavaPlugin {
     private static final int PORT = 7799;
@@ -109,21 +110,20 @@ public class WebMailItemGiver extends JavaPlugin {
 
             // Run on Bukkit main thread to avoid threading issues
             Bukkit.getScheduler().runTask(WebMailItemGiver.getPlugin(WebMailItemGiver.class), () -> {
-                Player player = Bukkit.getPlayer(playerName);
-                if (player == null || !player.isOnline()) {
+                LTPlayer player = LTPlayer.fromName(playerName);
+                if (player == null) {
                     getPlugin(WebMailItemGiver.class).getLogger().warning("Player not found: " + playerName);
                 } else {
-                    ItemStack itemStack = new ItemStack(org.bukkit.Material.matchMaterial(itemName), amount);
+                    ItemStack itemStack = new ItemStack(Material.matchMaterial(itemName), amount);
                     if (itemStack.getType().isAir()) {
                         getPlugin(WebMailItemGiver.class).getLogger().warning("Invalid item: " + itemName);
                     } else {
                         getPlugin(WebMailItemGiver.class).getLogger().info("Is LTItemMail instance null: " + String.valueOf(LTItemMail.getInstance() == null));
-                        var ltPlayer = LTPlayer.fromName(playerName);
                         var items = new LinkedList<ItemStack>();
                         items.add(itemStack);
                         var label = "Thank you!";
-                        Plugin mailAPI = Bukkit.getPluginManager().getPlugin("LTItemMailAPI");
-                        LTItemMailAPI.sendSpecialMailbox(ltPlayer, items, label);
+                        //Plugin mailAPI = Bukkit.getPluginManager().getPlugin("LTItemMailAPI");
+                        LTItemMailAPI.sendSpecialMail(player, items, label);
 //                        player.getInventory().addItem(itemStack);
                         getPlugin(WebMailItemGiver.class).getLogger().info("Gave " + amount + " " + itemName + " to " + playerName);
                     }

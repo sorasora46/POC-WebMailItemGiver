@@ -37,11 +37,19 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>11.0.15</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>br.net.gmj.nobookie</groupId>
             <artifactId>LTItemMail</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
+            <scope>provided</scope>
+            <exclusions>
+	            <exclusion>
+	                <groupId>*</groupId>
+	                <artifactId>*</artifactId>
+	            </exclusion>
+	        </exclusions>
         </dependency>
     </dependencies>
 
