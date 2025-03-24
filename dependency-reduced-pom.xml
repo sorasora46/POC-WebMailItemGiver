@@ -112,6 +112,18 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>br.net.gmj.nobookie</groupId>
+      <artifactId>LTItemMail</artifactId>
+      <version>1.1.0</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.target>21</maven.compiler.target>
